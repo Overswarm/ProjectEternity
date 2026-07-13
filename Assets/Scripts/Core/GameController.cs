@@ -24,7 +24,8 @@ namespace Eternity
             Sim = new Simulation(seed, Tuning.DefaultRivals);
 
             // clear any scene default camera so ours is the only one
-            foreach (var cam in FindObjectsOfType<Camera>())
+            // (FindObjectsByType: works in 2022.3+ and Unity 6; FindObjectsOfType is deprecated in 6)
+            foreach (var cam in FindObjectsByType<Camera>(FindObjectsSortMode.None))
                 Destroy(cam.gameObject);
 
             var lightGo = new GameObject("Sun");

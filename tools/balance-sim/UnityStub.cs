@@ -110,6 +110,7 @@ namespace UnityEngine
         public string name;
         public static void Destroy(Object obj) { }
         public static T[] FindObjectsOfType<T>() where T : Object => new T[0];
+        public static T[] FindObjectsByType<T>(FindObjectsSortMode mode) where T : Object => new T[0];
     }
 
     public class Texture : Object { }
@@ -139,6 +140,8 @@ namespace UnityEngine
     {
         public static T GetBuiltinResource<T>(string path) where T : Object => default(T);
     }
+
+    public enum FindObjectsSortMode { None, InstanceID }
 
     public enum PrimitiveType { Sphere, Capsule, Cylinder, Cube, Plane, Quad }
     public enum LightType { Spot, Directional, Point, Area }
