@@ -127,6 +127,7 @@ namespace UnityEngine
         public Material(Shader s) { }
         public bool enableInstancing;
         public void SetFloat(string name, float v) { }
+        public bool HasProperty(string name) => true;
     }
 
     public class MaterialPropertyBlock
@@ -332,4 +333,12 @@ namespace UnityEngine
     }
 
     public static class GUIUtility { public static int hotControl; }
+}
+
+namespace UnityEngine.Rendering
+{
+    public static class GraphicsSettings
+    {
+        public static object currentRenderPipeline => null;
+    }
 }

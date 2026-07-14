@@ -37,16 +37,26 @@ namespace Eternity
         GameObject selectionRing;
         float refreshTimer;
 
-        static readonly int ColorId = Shader.PropertyToID("_Color");
+        int ColorId;   // _Color (built-in RP) or _BaseColor (URP/HDRP), resolved at Init
 
         public void Init(Simulation sim)
         {
             this.sim = sim;
             mpb = new MaterialPropertyBlock();
 
-            var shader = Shader.Find("Standard");
+            // pipeline-agnostic material: works whether the project runs the
+            // built-in render pipeline or a Universal (URP) template
+            bool srp = UnityEngine.Rendering.GraphicsSettings.currentRenderPipeline != null;
+            Shader shader = null;
+            if (srp)
+                shader = Shader.Find("Universal Render Pipeline/Lit")
+                         ?? Shader.Find("Universal Render Pipeline/Unlit");
+            if (shader == null) shader = Shader.Find("Standard");
+
             baseMat = new Material(shader) { enableInstancing = true };
-            baseMat.SetFloat("_Glossiness", 0.05f);
+            if (baseMat.HasProperty("_Glossiness")) baseMat.SetFloat("_Glossiness", 0.05f);
+            if (baseMat.HasProperty("_Smoothness")) baseMat.SetFloat("_Smoothness", 0.05f);
+            ColorId = Shader.PropertyToID(baseMat.HasProperty("_BaseColor") ? "_BaseColor" : "_Color");
 
             uiFont = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
 
