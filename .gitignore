@@ -33,3 +33,6 @@ sysinfo.txt
 # balance-sim build output
 tools/**/bin/
 tools/**/obj/
+
+# Unity build output
+/Builds/
